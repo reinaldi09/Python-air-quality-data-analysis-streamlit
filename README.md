@@ -57,22 +57,49 @@ url1 = "https://raw.githubusercontent.com/marceloreis/HTI/master/PRSA_Data_20130
 airquality1_df = pd.read_csv(url1)
 airquality1_df.head(10)
 
-```markdown
+```
+
 ![Gathering Data](Assets/Gathering_data.png)
-
-
 
 #### b. Assessing Data
 - Melakukan inspeksi awal untuk memahami struktur data, jenis data, dan cakupan waktu.
 - Mengidentifikasi masalah seperti data duplikat, missing value, atau outlier.
+
+```python
+airquality_df.info()
+```
+
 ![Assessing Data](Assets/Assessig_data.png)
 
 #### c. Cleaning Data
 - **Mengatasi Missing Value**:
   - Menghapus baris atau kolom yang memiliki banyak missing value.
   - Mengisi missing value dengan rata-rata, median, atau strategi lain yang sesuai.
+
+```python
+airquality_df = airquality_df.fillna(0)
+airquality_df.isna().sum()
+```
+![Cleaning Data](Assets/Cleaning_data.png)
+
+
 - **Mengatasi Outlier**:
   - Menggunakan teknik seperti IQR (Interquartile Range) atau Z-score untuk mendeteksi dan menangani outlier.
+
+```python
+Q1 = (airquality_df['PM2.5']).quantile(0.25)
+Q3 = (airquality_df['PM2.5']).quantile(0.75)
+IQR = Q3 - Q1
+
+maximum = Q3 + (1.5*IQR)
+minimum = Q1 - (1.5*IQR)
+
+kondisi_lower_than = airquality_df['PM2.5'] < minimum
+kondisi_more_than = airquality_df['PM2.5'] > maximum
+
+airquality_df.drop(airquality_df[kondisi_lower_than].index, inplace=True)
+airquality_df.drop(airquality_df[kondisi_more_than].index, inplace=True)
+```
 
 ---
 
@@ -82,16 +109,58 @@ airquality1_df.head(10)
 - Mengeksplorasi distribusi data dengan histogram, boxplot, atau scatter plot.
 - Menganalisis hubungan antar-variabel menggunakan heatmap korelasi.
 
+```python
+airquality_df.describe()
+```
+![alt text](Assets/EDA.png)
+
 ---
 
 ### 3. Visualisasi Data Berdasarkan Pertanyaan Bisnis
 #### Contoh Pertanyaan Bisnis:
 - **Bagaimana tren kualitas udara sepanjang waktu?**
   - Gunakan line plot untuk menunjukkan perubahan konsentrasi polutan (misalnya, PM2.5) dari waktu ke waktu.
+```python
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=monthly_airquality_df, x=monthly_airquality_df.index, y='PM2.5', label='PM2.5', color='blue')
+sns.lineplot(data=monthly_airquality_df, x=monthly_airquality_df.index, y='PM10', label='PM10', color='orange')
+plt.title('Tren Polusi PM2.5 dan PM10 Sepanjang Tahun')
+plt.xlabel('Bulan')
+plt.ylabel('Konsentrasi (µg/m³)')
+plt.legend()
+plt.show()
+```
+![alt text](Assets/Tren_kualitas.png)
+
+
 - **Apakah ada hubungan antara suhu dan konsentrasi NO2?**
   - Gunakan scatter plot untuk memvisualisasikan hubungan antara suhu (TEMP) dan NO2.
-- **Bagaimana distribusi polutan di setiap stasiun?**
-  - Gunakan boxplot untuk membandingkan distribusi polutan di berbagai stasiun.
+```python
+# Korelasi Pearson
+pearson_corr = monthly_airquality_df[['NO2', 'SO2', 'TEMP']].corr(method='pearson')
+print("Korelasi Pearson:")
+print(pearson_corr)
+
+# Korelasi Spearman
+spearman_corr = monthly_airquality_df[['NO2', 'SO2', 'TEMP']].corr(method='spearman')
+print("\nKorelasi Spearman:")
+print(spearman_corr)
+```
+![alt text](Assets/Tem_corr.png)
+
+
+- **Hubungan kecepatan angin (WSPM) dan Polutan?**
+```python
+# Scatter plot untuk WSPM vs PM2.5
+plt.figure(figsize=(12, 6))
+sns.scatterplot(x='WSPM', y='PM2.5', data=monthly_airquality_df, alpha=0.6)
+plt.title('Hubungan WSPM dengan PM2.5')
+plt.xlabel('Kecepatan Angin (WSPM) (m/s)')
+plt.ylabel('Konsentrasi PM2.5 (µg/m³)')
+plt.show()
+```
+![alt text](Assets/WSPMwithpollutant.png)
+
 
 ---
 
@@ -108,8 +177,9 @@ airquality1_df.head(10)
 - Hitung persentase data yang masuk ke dalam setiap kelompok.
 
 #### c. Visualisasi Clustering
-- Gunakan pie chart atau bar chart untuk menampilkan proporsi data dalam setiap kelompok.
 - Gunakan heatmap untuk menampilkan distribusi nilai antar-kelompok.
+
+![alt text](Assets/Clustering.png)
 
 ---
 
@@ -132,4 +202,9 @@ pip install -r requirements.txt
 ## Run steamlit app
 ```
 streamlit run dashboard.py
+```
+
+## Streamlit app deployed
+```
+https://python-air-quality-data-analysis-app-frpppnauczaed4xyzferyj.streamlit.app/
 ```

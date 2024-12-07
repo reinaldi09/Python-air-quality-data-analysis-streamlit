@@ -16,7 +16,8 @@ data.set_index('datetime', inplace=True)
 
 # Sidebar untuk filter data berdasarkan rentang waktu
 with st.sidebar:
-    st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png")
+    # st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png")
+    st.image("./Python-air-quality-data-analysis-streamlit/Assets/datt.webp")
     start_date, end_date = st.date_input(
         "Pilih rentang waktu:",
         [data.index.min().date(), data.index.max().date()]
