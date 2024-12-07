@@ -50,12 +50,12 @@ Dataset ini dapat digunakan untuk memahami dan menganalisis:
 #### a. Gathering Data
 - Mengumpulkan data dari sumber yang tersedia, baik itu file CSV, database, atau API.
 - Pastikan data mencakup variabel-variabel yang relevan untuk analisis.
-![alt text](D:\Pythonproj\DICODING_Analisa data_Python\Python-air-quality-data-analysis-streamlit\Assets\Gathering_data.png)
+![Gathering Data](Assets/Gathering_data.png)
 
 #### b. Assessing Data
 - Melakukan inspeksi awal untuk memahami struktur data, jenis data, dan cakupan waktu.
 - Mengidentifikasi masalah seperti data duplikat, missing value, atau outlier.
-![alt text](D:\Pythonproj\DICODING_Analisa data_Python\Python-air-quality-data-analysis-streamlit\Assets\Assessig_data.png)
+![Assessing Data](Assets/Assessing_data.png)
 
 #### c. Cleaning Data
 - **Mengatasi Missing Value**:
