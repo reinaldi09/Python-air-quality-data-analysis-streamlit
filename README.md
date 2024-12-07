@@ -50,12 +50,22 @@ Dataset ini dapat digunakan untuk memahami dan menganalisis:
 #### a. Gathering Data
 - Mengumpulkan data dari sumber yang tersedia, baik itu file CSV, database, atau API.
 - Pastikan data mencakup variabel-variabel yang relevan untuk analisis.
+
+```python
+url1 = "https://raw.githubusercontent.com/marceloreis/HTI/master/PRSA_Data_20130301-20170228/PRSA_Data_Aotizhongxin_20130301-20170228.csv"
+
+airquality1_df = pd.read_csv(url1)
+airquality1_df.head(10)
+
+```markdown
 ![Gathering Data](Assets/Gathering_data.png)
+
+
 
 #### b. Assessing Data
 - Melakukan inspeksi awal untuk memahami struktur data, jenis data, dan cakupan waktu.
 - Mengidentifikasi masalah seperti data duplikat, missing value, atau outlier.
-![Assessing Data](Assets/Assessing_data.png)
+![Assessing Data](Assets/Assessig_data.png)
 
 #### c. Cleaning Data
 - **Mengatasi Missing Value**:
