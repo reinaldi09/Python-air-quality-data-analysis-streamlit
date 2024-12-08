@@ -6,9 +6,9 @@ import streamlit as st
 sns.set(style='darkgrid')
 
 # Load data polusi udara
-# data = pd.read_csv("all_data.csv")
+data = pd.read_csv("all_data.csv")
 
-data = pd.read_csv("./Dashboard_/all_data.csv")
+# data = pd.read_csv("./Dashboard_/all_data.csv")
 
 # Konversi kolom 'datetime' ke datetime dan atur sebagai indeks
 data['datetime'] = pd.to_datetime(data['datetime'])
@@ -16,8 +16,8 @@ data.set_index('datetime', inplace=True)
 
 # Sidebar untuk filter data berdasarkan rentang waktu
 with st.sidebar:
-    # st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png")
-    st.image("./Python-air-quality-data-analysis-streamlit/Assets/datt.webp")
+    st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png")
+    # st.image("./Python-air-quality-data-analysis-streamlit/Assets/datt.webp")
     start_date, end_date = st.date_input(
         "Pilih rentang waktu:",
         [data.index.min().date(), data.index.max().date()]
