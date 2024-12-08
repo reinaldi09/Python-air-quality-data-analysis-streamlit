@@ -6,9 +6,10 @@ import streamlit as st
 sns.set(style='darkgrid')
 
 # Load data polusi udara
-# data = pd.read_csv("all_data.csv")
+data = pd.read_csv("all_data.csv")
+data1 = pd.read_csv("all_data1.csv")
 
-data = pd.read_csv("./Dashboard_/all_data.csv")
+# data = pd.read_csv("./Dashboard_/all_data.csv")
 
 # Konversi kolom 'datetime' ke datetime dan atur sebagai indeks
 data['datetime'] = pd.to_datetime(data['datetime'])
@@ -26,7 +27,36 @@ with st.sidebar:
 # Filter data sesuai rentang waktu
 filtered_data = data.loc[start_date:end_date]
 
-# --- 1. Tren PM2.5 dan PM10 sepanjang tahun ---
+# --- 1. Pairplot antar variabel polusi dan suhu ---
+st.header("Pairplot Antar Variabel Polusi dan Suhu")
+pairplot_vars = ['PM2.5', 'PM10', 'NO2', 'SO2', 'TEMP']
+fig = sns.pairplot(data=data1, hue='wd', palette='Set1', vars=pairplot_vars)
+fig.fig.suptitle("Pairplot Antar Variabel Polusi dan Suhu", y=1.02, fontsize=16)
+st.pyplot(fig)
+
+st.markdown("Pairplot ini menunjukkan hubungan antar variabel polusi udara (PM2.5, PM10, NO2, SO2) dan suhu dengan warna yang merepresentasikan arah angin.")
+
+# --- 2. Distribusi PM2.5 berdasarkan arah angin ---
+st.header("Distribusi PM2.5 Berdasarkan Arah Angin")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.boxplot(x='wd', y='PM2.5', data=data1, palette='Set3', ax=ax)
+ax.set_title("Distribusi PM2.5 Berdasarkan Arah Angin", fontsize=16)
+ax.set_xlabel("Arah Angin")
+ax.set_ylabel("PM2.5 (µg/m³)")
+st.pyplot(fig)
+
+st.markdown("Boxplot ini menunjukkan distribusi PM2.5 berdasarkan arah angin.")
+
+# --- 3. Boxplot untuk melihat outlier polutan ---
+st.header("Boxplot Polutan Udara")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.boxplot(data=data1[['PM2.5', 'PM10', 'NO2', 'SO2']], palette='coolwarm', ax=ax)
+ax.set_title("Boxplot Polutan Udara", fontsize=16)
+st.pyplot(fig)
+
+st.markdown("Boxplot ini digunakan untuk mengidentifikasi outlier dari masing-masing polutan udara.")
+
+# --- 4. Tren PM2.5 dan PM10 sepanjang tahun ---
 st.header("Tren PM2.5 dan PM10 Sepanjang Tahun")
 
 fig, ax = plt.subplots(figsize=(14, 6))
@@ -38,7 +68,7 @@ st.pyplot(fig)
 
 st.markdown("Grafik menunjukkan tren musiman dari PM2.5 dan PM10 sepanjang tahun.")
 
-# --- 2. Hubungan NO2 dan SO2 dengan Suhu ---
+# --- 5. Hubungan NO2 dan SO2 dengan Suhu ---
 st.header("Hubungan Antara Konsentrasi NO2 dan SO2 dengan Suhu")
 
 fig, ax = plt.subplots(1, 2, figsize=(16, 6))
@@ -55,7 +85,7 @@ ax[1].set_ylabel("Konsentrasi SO2 (µg/m³)")
 st.pyplot(fig)
 st.markdown("Hubungan antara NO2 dan SO2 dengan suhu dapat membantu memahami bagaimana polutan ini bereaksi terhadap perubahan suhu.")
 
-# --- 3. Hubungan Kecepatan Angin dan Polutan ---
+# --- 6. Hubungan Kecepatan Angin dan Polutan ---
 st.header("Hubungan Antara Kecepatan Angin dan Polutan")
 
 fig, ax = plt.subplots(1, 3, figsize=(20, 6))
@@ -69,7 +99,7 @@ ax[2].set_title("CO vs Kecepatan Angin")
 st.pyplot(fig)
 st.markdown("Grafik di atas menunjukkan hubungan antara kecepatan angin dan polutan seperti PM2.5, PM10, dan CO.")
 
-# --- 4. Clustering Manual untuk PM2.5 ---
+# --- 7. Clustering Manual untuk PM2.5 ---
 def categorize_pm25(value):
     if value <= 50:
         return 'Low'
@@ -94,7 +124,7 @@ st.pyplot(fig)
 
 st.markdown("Scatter plot menunjukkan hubungan PM2.5 dan PM10 berdasarkan kategori PM2.5.")
 
-# --- 5. Clustering Manual untuk NO2 ---
+# --- 8. Clustering Manual untuk NO2 ---
 def cluster_NO2(value):
     if value <= 30:
         return 'Rendah'
