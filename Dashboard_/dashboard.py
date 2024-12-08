@@ -6,10 +6,11 @@ import streamlit as st
 sns.set(style='darkgrid')
 
 # Load data polusi udara
-data = pd.read_csv("all_data.csv")
-data1 = pd.read_csv("all_data1.csv")
+# data = pd.read_csv("all_data.csv")
+# data1 = pd.read_csv("all_data1.csv")
 
-# data = pd.read_csv("./Dashboard_/all_data.csv")
+data = pd.read_csv("./Dashboard_/all_data.csv")
+data = pd.read_csv("./Dashboard_/all_data1.csv")
 
 # Konversi kolom 'datetime' ke datetime dan atur sebagai indeks
 data['datetime'] = pd.to_datetime(data['datetime'])
